@@ -1,0 +1,20 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "test all regarding javascript",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "TEST"
+  ],
+  "author": "Rick",
+  "license": "ISC",
+  "dependencies": {
+    "@botz1991/pdf-parse": "^1.0.0",
+    "pdf-extraction": "^1.0.2",
+    "pdf-parser": "^1.0.5",
+    "simple-pdf": "^0.1.13"
+  }
+}

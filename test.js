@@ -4,12 +4,38 @@ const pdfFiles = fs.readdirSync("./pdf").map((el) => `./pdf/${el}`);
 const cd = [];
 console.log(pdfFiles);
 
-function accountChangeSum(arr) {
-  const result = cd.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
-  console.log(result);
+function accountChangeSum() {
+  const result = cd.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);;
+  result.map(el=>el/100)
+  console.log(result.map(el=>el/100));
 }
 
+function getOriginalAmount(){
+  let oAS = []
+  let dataBuffer = fs.readFileSync('./pdf/1.pdf')
+  pdf(dataBuffer).then(data=>{
+    let bss = data.text
+        .split("\n")
+        .filter((el) => el.endsWith("USD"))
+        .map((el) => el.replace(/,/g, ""));
+      // console.log(bss)
+     bss.map(ele=>{
+       const oA = parseInt(parseFloat(ele.trim().split("  ")[3].split(' ')[0])*100)
+      //  console.log(oA) 
+       oAS.push(oA)
+     })
+     cd.push(oAS)
+    //  console.log(cd)
+  })
+}
+
+
+
+
+
 async function getDCSummary() {
+
+  await getOriginalAmount()
   for (const pdfFile of pdfFiles) {
     let dataBuffer = fs.readFileSync(pdfFile);
     await pdf(dataBuffer).then((data) => {
@@ -24,7 +50,8 @@ async function getDCSummary() {
           .map((ele) => (ele = parseFloat(ele)))
       );
       const bss_sum = bss_trim.map(
-        (el) => parseInt(-100 * el[0] + 100 * el[1]) / 100
+        // *100
+        (el) => parseInt(-100 * el[0] + 100 * el[1])
       );
       cd.push(bss_sum);
     });
@@ -33,3 +60,4 @@ async function getDCSummary() {
 }
 
 getDCSummary();
+// getOriginalAmount()

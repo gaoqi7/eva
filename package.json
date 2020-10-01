@@ -16,6 +16,7 @@
     "easy-pdf-merge": "^0.2.5",
     "jspdf": "^2.1.1",
     "pdf-extraction": "^1.0.2",
+    "pdf-lib": "^1.11.1",
     "pdf-parser": "^1.0.5",
     "simple-pdf": "^0.1.13"
   }

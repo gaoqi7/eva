@@ -1,22 +1,24 @@
 const fs = require("fs");
+// The package below extraction the text from pdf.
 const pdf = require("pdf-extraction");
 const pdfFiles = fs.readdirSync("./pdf").map((el) => `./pdf/${el}`);
+//The Package Below can be use to CREATE a new pdf which shows the cps result in this project
 const {jsPDF} = require("jspdf")
-
+//Use the package below for merging all pdf files. Make it easy to print
 const merge = require('easy-pdf-merge');
 
 
 
 var cd = [];
 console.log(pdfFiles);
-
+// use this function to accumulate day's amount change for each account
 function accountChangeSum(arr) {
   const result = arr.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);;
   cd = result.map(el=>(el/100).toString())
   console.log(cd)
-  // console.log(result.map(el=>(el/100).toString()));
 }
 
+// Get the Start Amount
 function getOriginalAmount(){
   let oAS = []
   let dataBuffer = fs.readFileSync('./pdf/1.pdf')
@@ -25,21 +27,19 @@ function getOriginalAmount(){
         .split("\n")
         .filter((el) => el.endsWith("USD"))
         .map((el) => el.replace(/,/g, ""));
-      // console.log(bss)
      bss.map(ele=>{
        const oA = parseInt(parseFloat(ele.trim().split("  ")[3].split(' ')[0])*100)
       //  console.log(oA) 
        oAS.push(oA)
      })
      cd.push(oAS)
-    //  console.log(cd)
   })
 }
 
 
 
 
-
+//Deal with the raw data and get the data I need for CPS, which is Debit amount and Credit amount
 async function getDCSummary() {
 
   await getOriginalAmount()

@@ -18,6 +18,8 @@
     "pdf-extraction": "^1.0.2",
     "pdf-lib": "^1.11.1",
     "pdf-parser": "^1.0.5",
-    "simple-pdf": "^0.1.13"
+    "robotjs": "^0.6.0",
+    "simple-pdf": "^0.1.13",
+    "sleep": "^6.3.0"
   }
 }

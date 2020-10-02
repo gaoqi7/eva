@@ -1,6 +1,7 @@
 const robot = require("robotjs");
 const sleep = require('sleep')
 const toPath = 'C:\\Users\\H36360\\Documents\\eva\\pdf'
+const rpt = process.argv[2]
 // var mouse = robot.getMousePos();
 // console.log("Mouse is at x:" + mouse.x + " y:" + mouse.y)
 const startPoint = [93,299]
@@ -30,8 +31,8 @@ robot.keyTap('tab')
 robot.keyTap('enter')
 sleep.msleep(500)
 }
-
+console.log(`Done! Successfully export ${rpt} pdf files.`)
 }
 
 
-pdfExport(4)
+pdfExport(rpt)

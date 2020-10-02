@@ -10,6 +10,7 @@ const merge = require('easy-pdf-merge');
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 
 var cd = [];
+let unCashOutCheckAmount = 0
 console.log(pdfFiles);
 // use this function to accumulate day's amount change for each account
 function accountChangeSum(arr) {
@@ -104,7 +105,7 @@ merge(pdfPath, './pdf/forPrint.pdf', function (err) {
 });
 }
 
-getDCSummary();
+// getDCSummary();
 
 async function modifyLastPage(){
   const existingPdfBytes = await fs.readFileSync('./pdf/forPrint.pdf')
@@ -170,3 +171,17 @@ await fs.writeFileSync('./pdf/forPrint.pdf', pdfBytes)
 
 
 }
+
+
+function r710(){
+  let r710Buffer = fs.readFileSync('./r710/710.pdf')
+  pdf(r710Buffer).then(data => {
+    // data.text.split('\n')
+    const textArr = data.text.split('\n')
+    // console.log(textArr[textArr.length-2])
+    unCashOutCheckAmount =  parseFloat(textArr[textArr.length-2].replace(',',''))
+    console.log(unCashOutCheckAmount)
+  })
+}
+
+r710()

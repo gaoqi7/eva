@@ -2,6 +2,8 @@ const fs = require("fs");
 // The package below extraction the text from pdf.
 const pdf = require("pdf-extraction");
 const pdfFiles = fs.readdirSync("./pdf").map((el) => `./pdf/${el}`);
+const totalPdfFiles = pdfFiles.length
+console.log(totalPdfFiles)
 //The Package Below can be use to CREATE a new pdf which shows the cps result in this project
 // const {jsPDF} = require("jspdf")
 //Use the package below for merging all pdf files. Make it easy to print
@@ -105,7 +107,7 @@ merge(pdfPath, './pdf/forPrint.pdf', function (err) {
 });
 }
 
-// getDCSummary();
+getDCSummary();
 
 async function modifyLastPage(){
   const existingPdfBytes = await fs.readFileSync('./pdf/forPrint.pdf')
@@ -115,7 +117,7 @@ async function modifyLastPage(){
   // Embed the Helvetica font
 const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
   const pages = pdfDoc.getPages()
-  const firstPage = pages[1]
+  const firstPage = pages[totalPdfFiles-1]
 
   // Get the width and height of the first page
 const { width, height } = firstPage.getSize()
@@ -172,7 +174,7 @@ await fs.writeFileSync('./pdf/forPrint.pdf', pdfBytes)
 
 }
 
-
+// This part is used for parse the r710 report. 
 function r710(){
   let r710Buffer = fs.readFileSync('./r710/710.pdf')
   pdf(r710Buffer).then(data => {
@@ -184,4 +186,4 @@ function r710(){
   })
 }
 
-r710()
+// r710()

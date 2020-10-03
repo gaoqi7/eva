@@ -4,6 +4,9 @@ const pdf = require("pdf-extraction");
 const pdfFiles = fs.readdirSync("./pdf").map((el) => `./pdf/${el}`);
 const totalPdfFiles = pdfFiles.length
 console.log(totalPdfFiles)
+
+const ptp = require('pdf-to-printer')
+
 //The Package Below can be use to CREATE a new pdf which shows the cps result in this project
 // const {jsPDF} = require("jspdf")
 //Use the package below for merging all pdf files. Make it easy to print
@@ -107,32 +110,31 @@ merge(pdfPath, './pdf/forPrint.pdf', function (err) {
 });
 }
 
-getDCSummary();
 
 async function modifyLastPage(){
   const existingPdfBytes = await fs.readFileSync('./pdf/forPrint.pdf')
   // console.log(existingPdfBytes)
   const pdfDoc = await PDFDocument.load(existingPdfBytes)
-
+  
   // Embed the Helvetica font
-const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+  const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
   const pages = pdfDoc.getPages()
   const firstPage = pages[totalPdfFiles-1]
-
+  
   // Get the width and height of the first page
-const { width, height } = firstPage.getSize()
-console.log(width)
-console.log(height)
-// Draw a string of text diagonally across the first page
-firstPage.drawText(cd[0], {
-  x: 760,
-  y: 458,
-  size: 12,
-  font: helveticaFont,
-  color: rgb(0.95, 0.1, 0.1),
-})
-firstPage.drawText(cd[1], {
-  x: 760,
+  const { width, height } = firstPage.getSize()
+  console.log(width)
+  console.log(height)
+  // Draw a string of text diagonally across the first page
+  firstPage.drawText(cd[0], {
+    x: 760,
+    y: 458,
+    size: 12,
+    font: helveticaFont,
+    color: rgb(0.95, 0.1, 0.1),
+  })
+  firstPage.drawText(cd[1], {
+    x: 760,
   y: 403,
   size: 12,
   font: helveticaFont,
@@ -187,3 +189,24 @@ function r710(){
 }
 
 // r710()
+
+
+
+// Print
+function pp(){
+
+
+  ptp
+    .print("./pdf/forPrint.pdf")
+    .then(console.log)
+    .catch(console.error);
+}
+
+
+pp()
+
+// getDCSummary();
+
+
+
+

@@ -1,0 +1,18 @@
+{
+  "name": "apfilter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "apFilter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ap",
+    "excel"
+  ],
+  "author": "Rick Gao",
+  "license": "ISC",
+  "dependencies": {
+    "exceljs": "^4.1.1"
+  }
+}

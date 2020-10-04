@@ -192,7 +192,7 @@ function r710(){
 
 
 
-// Print
+// Print the file directly to office printer
 function pp(){
 
 

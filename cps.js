@@ -5,7 +5,6 @@ const pdfFiles = fs.readdirSync("./pdf").map((el) => `./pdf/${el}`);
 const totalPdfFiles = pdfFiles.length
 console.log(totalPdfFiles)
 
-const ptp = require('pdf-to-printer')
 
 //The Package Below can be use to CREATE a new pdf which shows the cps result in this project
 // const {jsPDF} = require("jspdf")
@@ -191,19 +190,6 @@ function r710(){
 // r710()
 
 
-
-// Print the file directly to office printer
-function pp(){
-
-
-  ptp
-    .print("./pdf/forPrint.pdf")
-    .then(console.log)
-    .catch(console.error);
-}
-
-
-// pp()
 
 getDCSummary();
 

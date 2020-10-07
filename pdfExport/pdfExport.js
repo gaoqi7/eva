@@ -2,6 +2,7 @@
 const robot = require("robotjs");
 const sleep = require('sleep')
 const toPath = 'C:\\Users\\H36360\\Documents\\eva\\pdf'
+//How many reports need to be exported.
 const rpt = process.argv[2]
 // var mouse = robot.getMousePos();
 // console.log("Mouse is at x:" + mouse.x + " y:" + mouse.y)
@@ -14,7 +15,7 @@ for (i = 0;i<times;i++){
     const pdfFileName = `\\${times - i}.pdf`
 robot.moveMouse(93,originalY)
 robot.mouseClick()
-sleep.sleep(2)
+sleep.sleep(3)
 
 robot.moveMouse(555,115)
 robot.mouseClick()

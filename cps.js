@@ -1,22 +1,32 @@
+//***************************** */
+
+// node cps.js y 
+// node cps.js n
+
+//***************************** */
 const fs = require("fs");
+const fse = require('fs-extra')
 // The package below extraction the text from pdf.
 const pdf = require("pdf-extraction");
+// All CPS daily report store in pdf folder
 const pdfFiles = fs.readdirSync("./pdf").map((el) => `./pdf/${el}`);
 const totalPdfFiles = pdfFiles.length
 console.log(totalPdfFiles)
 
+const isWrite = process.argv[2]
 
-//The Package Below can be use to CREATE a new pdf which shows the cps result in this project
-// const {jsPDF} = require("jspdf")
 //Use the package below for merging all pdf files. Make it easy to print
 const merge = require('easy-pdf-merge');
 
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
-
+const { cpus } = require("os");
+// Empty array, used to store the calcuated result for total Credit(c) and total Debit(d)
 var cd = [];
+// 
 let unCashOutCheckAmount = 0
 console.log(pdfFiles);
 // use this function to accumulate day's amount change for each account
+// list of array, the values have the same index will be added together and store in array cd
 function accountChangeSum(arr) {
   const result = arr.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);;
   cd = result.map(el=>(el/100).toString())
@@ -25,6 +35,7 @@ function accountChangeSum(arr) {
 
 // Get the Start Amount
 function getOriginalAmount(){
+  //oAS means original Account Statement
   let oAS = []
   let dataBuffer = fs.readFileSync('./pdf/1.pdf')
   pdf(dataBuffer).then(data=>{
@@ -104,8 +115,17 @@ merge(pdfPath, './pdf/forPrint.pdf', function (err) {
     if (err) {
         return console.log(err)
     }
+
+for (i = 1;i <= totalPdfFiles;i++){
+fse.removeSync(`./pdf/${i}.pdf`)
+}
+
+// if process.argv[2] doesn't equal Y, means this CPS report will not be showed to Manager, that is why we can still modify.
+
     console.log('Success')
-    modifyLastPage()
+    if (isWrite !== "y"){
+      modifyLastPage()
+    }
 });
 }
 

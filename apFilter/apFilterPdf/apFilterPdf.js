@@ -62,8 +62,7 @@ if (payType !== 'C'){
 let venderInfo = `${el[2]}${el[3]}`
 let venderCode = venderInfo.substring(0,8)
 let venderName = venderInfo.slice(8)
-console.log(venderCode,venderName)
-// console.log(apNO,amount,remitDay,payType,venderCode,venderName)
+console.log(apNO,amount,remitDay,payType,venderCode,venderName)
 })
 modifyExcle()
 

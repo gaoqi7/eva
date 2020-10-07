@@ -10,8 +10,8 @@ pdf(dataBuffer).then(data=>{
 console.log(data.text)
 const rawArr = data.text.split('\n')
 // For Request Date
-const apReqDate = rawArr[12]
-
+const apReqDate = rawArr[12].split('/').join('')
+console.log(apReqDate)
 // For Request Department
 const apReqDep = rawArr[13]
 
@@ -50,11 +50,21 @@ return workbook.xlsx.writeFile('ACH-1.xlsx')
 
 console.log(afterFilter.chunk(4))
 
-// afterFilter.chunk(4).forEach(el=>{
-
-// el[0].split(' ')
-// })
+afterFilter.chunk(4).forEach(el=>{
+let apNO = `${apReqDate}-${apReqDep}-${el[0].split(' ')[0]}`
+let amount = el[0].split(' ')[1].replace(',','') 
+let remitDay =el[0].split(' ')[2].slice(-10).split('/').join('')
+let payType = el[1][1]
+if (payType !== 'C'){
+    let localPayDay = el[1].slice(-10).split('/').join('')
+    console.log(localPayDay)
+}
+let venderInfo = `${el[2]}${el[3]}`
+let venderCode = venderInfo.substring(0,8)
+let venderName = venderInfo.slice(8)
+console.log(venderCode,venderName)
+// console.log(apNO,amount,remitDay,payType,venderCode,venderName)
+})
 modifyExcle()
-// const worksheet = workbook.getWorksheet(1)
 
 })

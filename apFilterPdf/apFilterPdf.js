@@ -1,7 +1,6 @@
 const Excel = require('exceljs')
-const workbook = createAndFillWorkbook();
-await workbook.xlsx.writeFile('ACH&WIRE PAYMENT-bk.xlsx');
-const worksheet = workbook.getWorksheet(1)
+const workbook = new Excel.Workbook()
+
 
 const pdf =  require('pdf-extraction')
 const fs = require('fs')
@@ -36,12 +35,26 @@ Array.prototype.chunk = function (chunk_size) {
     return [ this.slice( 0, chunk_size ) ].concat(this.slice(chunk_size).chunk(chunk_size));
 };
 
+async function modifyExcle(){
+
+    await workbook.xlsx.readFile('ACH.xlsx');
+const ws = workbook.getWorksheet(1)
+ws.getCell('A3').value="GOOD"
+return workbook.xlsx.writeFile('ACH-1.xlsx')
+// console.log(ws.getCell('B1').value)
+
+
+
+}
+
+
 console.log(afterFilter.chunk(4))
 
-afterFilter.chunk(4).forEach(el=>{
+// afterFilter.chunk(4).forEach(el=>{
 
-el[0].split(' ')
-})
-
+// el[0].split(' ')
+// })
+modifyExcle()
+// const worksheet = workbook.getWorksheet(1)
 
 })

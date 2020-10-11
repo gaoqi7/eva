@@ -18,7 +18,8 @@ function parsePdf(){
         aiList.forEach((el,i)=>{
             // Two condition: 1. start with number. A little bit shame to express like below. I should use regex.
             // condition 2. all the account code are only 6 charactors
-            let condition1 = el.trim().startsWith('1') || el.trim().startsWith('2') ||el.trim().startsWith('3') ||el.trim().startsWith('4') ||el.trim().startsWith('5') ||el.trim().startsWith('6') ||el.trim().startsWith('7') ||el.trim().startsWith('8') ||el.trim().startsWith('9')
+            // let condition1 = el.trim().startsWith('1') || el.trim().startsWith('2') ||el.trim().startsWith('3') ||el.trim().startsWith('4') ||el.trim().startsWith('5') ||el.trim().startsWith('6') ||el.trim().startsWith('7') ||el.trim().startsWith('8') ||el.trim().startsWith('9')
+            let condition1 = el.trim().match(/^\d/)
             let condition2 = el.length === 6
           if (condition1 && condition2){
               aiListAfterFilter.push([el,aiList[i-1].slice(-4)])

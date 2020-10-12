@@ -12,7 +12,7 @@ const aiListAfterFilter = []
 function parsePdf(){
     let dataBuffer = fse.readFileSync('coa.pdf')
     pdf(dataBuffer).then(data=>{
-        // console.log(data.text)
+        console.log(data.text)
         let rawText = data.text
         let aiList = rawText.split('\n')
         aiList.forEach((el,i)=>{

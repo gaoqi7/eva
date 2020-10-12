@@ -34,11 +34,11 @@ async function modify(){
     eeChunk.push(['NNNNNN',ws.rowCount+1])
     console.log(eeChunk)
     
-    // function dayCount(sp,ep){
         
-    // }
+    //This loop is looping the person. 
     for (i=0;i<eeChunk.length-1;i++){
         let a = [] // used for collect the punch date info
+        // this loop is for everyday's punch info for one person
         for (j=eeChunk[i][1]+1;j<eeChunk[i+1][1];j++){
             // Remove Duplicate content in Column A & B
             ws.getCell(`A${j}`).value = null
@@ -49,16 +49,29 @@ async function modify(){
                 a.push(j-1)
             }
         }
+        // Why? because I need know the ending day of one person's last punch record
+        // How? Next person's starter day is the last person's ending record.
+        a.push(eeChunk[i+1][0])
+        a.push(eeChunk[i+1][1])
         console.log(a)
+        //Chunk the array. bounding the punch date and row number
         let b = a.chunk(2)
         console.log(b)
+        //Looping each day which has punch info recorded.
         for(t = 0;t<b.length-1;t++){
+            console.log(t)
+            // if the daily records start with Punch In, and ending with Punch Out or Overtime Out. I will consider this employee have a good punch action.
+            // Again, I still use the next day's start row to calculate the previous person's ending record row number.
             if(ws.getCell(`H${b[t][1]}`).value.trim() === 'Punch In' && ws.getCell(`H${b[t+1][1]-1}`).value.trim().endsWith('Out')){
+                // Day Count
                 ws.getCell(`E${b[t][1]}`).value = 1
+                // Use Formula to calculate the working time. But the result is the floating number
                 ws.getCell(`J${b[t][1]}`).value={formula:`I${b[t+1][1]-1}-I${b[t][1]}`}
+                //Format the floating number to time format. 
                 ws.getCell(`J${b[t][1]}`).numFmt = 'hh:mm'
 
             }else{
+                // use ?????? to indicate the bad punch action.
                 ws.getCell(`E${b[t][1]}`).value = '?????'
             }
         }

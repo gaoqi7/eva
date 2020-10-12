@@ -73,6 +73,7 @@ async function modify(){
             }else{
                 // use ?????? to indicate the bad punch action.
                 ws.getCell(`E${b[t][1]}`).value = '?????'
+
             }
         }
     }

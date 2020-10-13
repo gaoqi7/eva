@@ -28,7 +28,8 @@ rawArr.forEach((el,i)=>{
 // line ***start with '00' *** includes the AP number information
 // line start with "N" and the third charactor is ":"
    const isLocalPayInfo = el.startsWith('N') && el[2]===':'
-if(el.startsWith('00') || isLocalPayInfo){
+   //There is one Payment Application Called 4601, HHHHHHHH
+if(el.startsWith('00') || isLocalPayInfo || el.startsWith('46')){
     afterFilter.push(el)
 }
 // The venderInfo is under the modifier line
@@ -37,7 +38,7 @@ if(el.startsWith('Modifier')){
     afterFilter.push(rawArr[i+2])
 }
 })
-// console.log(afterFilter)
+console.log(afterFilter)
 // Copied from google. works well
 Array.prototype.chunk = function (chunk_size) {
     if ( !this.length ) {
@@ -50,17 +51,36 @@ Array.prototype.chunk = function (chunk_size) {
 
 
 // 對數據再處理，保證格式正確。
+console.log(afterFilter.chunk(4))
 const dataReady = []
-afterFilter.chunk(4).forEach(el=>{
+afterFilter.chunk(4).forEach((el,i)=>{
     let payType = el[1][1]
+    console.log("this is ",i)
     if (payType !== 'C'){
         let apNO = `${apReqDate}-${apReqDep}-${el[0].split(' ')[0]}`
         let amount = el[0].split(' ')[1].replace(',','') 
         let remitDay =el[0].split(' ')[2].slice(-10).split('/').join('')
-        let localPayDay = el[1].slice(-10).split('/').join('')
+        let localPayDay
+        // There is one bug in financial system. 
+        // Financial System Can't get local pay day from uploaded excel file
+        // Attention: I use == not === to decide if the AP is reimburstment
+        if(el[0].split(' ')[0]==4601){
+            localPayDay = remitDay - 1
+        }else{
+            localPayDay = el[1].slice(-10).split('/').join('')
+        }
+
+
+
         let venderInfo = `${el[2]}${el[3]}`
         // let venderCode = venderInfo.substring(0,8)
-        let venderName = venderInfo.slice(8)
+        let venderName
+        //There is one kind of vendor called Employee ID
+        if(el[2].length === 6){
+            venderName = venderInfo.slice(6)
+        }else{
+            venderName = venderInfo.slice(8)
+        }
         dataReady.push([remitDay,apNO,venderName,localPayDay,amount])
     }
 })

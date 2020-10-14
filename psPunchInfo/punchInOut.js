@@ -59,7 +59,7 @@ async function modify(){
         console.log(b)
         //Looping each day which has punch info recorded.
         for(t = 0;t<b.length-1;t++){
-            console.log(t)
+            // console.log(t)
             // if the daily records start with Punch In, and ending with Punch Out or Overtime Out. I will consider this employee have a good punch action.
             // Again, I still use the next day's start row to calculate the previous person's ending record row number.
             if(ws.getCell(`H${b[t][1]}`).value.trim() === 'Punch In' && ws.getCell(`H${b[t+1][1]-1}`).value.trim().endsWith('Out')){

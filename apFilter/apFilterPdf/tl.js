@@ -13,7 +13,7 @@ const fs = require('fs')
 // Then cut the single array in small pieces. each piece match only one payment info
 //Care the file name, tend to use process.argv
 //1.pdf !!! what a great name!!!    
-let dataBuffer = fs.readFileSync('tl_both.pdf')
+let dataBuffer = fs.readFileSync('tl.pdf')
 pdf(dataBuffer).then(data=>{
     const rawArr = data.text.split('\n')
     console.log(rawArr)
@@ -40,6 +40,9 @@ async function modifyExcel(){
     const ws = workbook.getWorksheet(1)
     let amountArr=[] 
     let tDay = transactionInfo[0][0].split('/').join('')
+    let td1 = tDay.slice(4)
+    let td2 = tDay.slice(0,4)
+    tDay = `${td1}${td2}`
     transactionInfo.forEach(el=>{
         let a = parseInt(parseFloat(el[1].replace(/,/g,''))*100)/100
         amountArr.push(a)
@@ -47,27 +50,67 @@ async function modifyExcel(){
     let totalRow = ws.rowCount
 
     const localPDCol = ws.getColumn('F')
-    function sum(date){
+    function amountMatchPoolCreate(date){
         let amountList = []
+        console.log('inside amountMatchPool date ', date)
+
         localPDCol.eachCell((cell,rowNumber)=>{
             if(cell.value == date && ws.getCell(`E${rowNumber}`).value === null){
-                amountList.push(ws.getCell(`G${rowNumber}`))
+                console.log('inside amountMatchPool cell_value', cell.value)
+                amountList.push(ws.getCell(`G${rowNumber}`).value)
             }
         })
-        
+        return amountList
     }
 
+    function amountSumMatch(arr, target){
 
-    const amountCol = ws.getColumn('G')
-    amountCol.eachCell((cell,rowNumber)=>{
-        if(amountArr.indexOf(cell.value)!== -1 && ws.getCell(`E${rowNumber}`).value === null && ws.getCell(`F${rowNumber}`).value === tDay ){
-            ws.getCell(`E${rowNumber}`).value = amountArr[amountArr.indexOf(cell.value)]
+        function powerset(arr) {
+            var ps = [[]];
+            for (var i=0; i < arr.length; i++) {
+                for (var j = 0, len = ps.length; j < len; j++) {
+                    ps.push(ps[j].concat(arr[i]));
+                }
+            }
+            return ps;
+        }
+        
+        function sum(arr) {
+            var total = 0;
+            for (var i = 0; i < arr.length; i++)
+                total += arr[i];
+            return total
+        }
+        
+        function findSum(numbers, targetSum) {
+            var numberSets = powerset(numbers);
+            for (var i=0; i < numberSets.length; i++) {
+                var numberSet = numberSets[i]; 
+                if (sum(numberSet) == targetSum)
+                    return numberSet;
+            }
         }
 
+       return findSum(arr,target)
+
+
+    }
+    
+    const aMP = amountMatchPoolCreate(tDay)
+    console.log(tDay)
+    console.log(aMP)
+    console.log(amountArr)
+    amountArr.forEach(el=>{
+        console.log(`for${el}`)
+let a =amountSumMatch(aMP,el)
+console.log(a)
+
     })
+    
+
 
 }
-
+modifyExcel()
 
 
 // // console.log(afterFilter)

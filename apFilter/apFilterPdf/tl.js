@@ -32,7 +32,46 @@ rawArr.forEach((el,i)=>{
     }
 })
 console.log(transactionInfo)
+
+async function modifyExcel(){
+
+    fse.copySync('ACH.xlsx','ACHBk.xlsx')
+    await workbook.xlsx.readFile('ACHBk.xlsx')
+    const ws = workbook.getWorksheet(1)
+    let amountArr=[] 
+    let tDay = transactionInfo[0][0].split('/').join('')
+    transactionInfo.forEach(el=>{
+        let a = parseInt(parseFloat(el[1].replace(/,/g,''))*100)/100
+        amountArr.push(a)
+    })
+    let totalRow = ws.rowCount
+
+    const localPDCol = ws.getColumn('F')
+    function sum(date){
+        let amountList = []
+        localPDCol.eachCell((cell,rowNumber)=>{
+            if(cell.value == date && ws.getCell(`E${rowNumber}`).value === null){
+                amountList.push(ws.getCell(`G${rowNumber}`))
+            }
+        })
+        
+    }
+
+
+    const amountCol = ws.getColumn('G')
+    amountCol.eachCell((cell,rowNumber)=>{
+        if(amountArr.indexOf(cell.value)!== -1 && ws.getCell(`E${rowNumber}`).value === null && ws.getCell(`F${rowNumber}`).value === tDay ){
+            ws.getCell(`E${rowNumber}`).value = amountArr[amountArr.indexOf(cell.value)]
+        }
+
+    })
+
+}
+
+
+
 // // console.log(afterFilter)
+
 // // Copied from google. works well
 // Array.prototype.chunk = function (chunk_size) {
 //     if ( !this.length ) {

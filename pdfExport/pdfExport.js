@@ -27,11 +27,12 @@ robot.keyTap("tab")
 robot.typeString(`${toPath}${pdfFileName}`)
 robot.keyTap('tab')
 robot.keyTap('enter')
-sleep.msleep(500)
+sleep.sleep(1)
 
 robot.keyTap('tab')
+sleep.sleep(1)
 robot.keyTap('enter')
-sleep.msleep(500)
+sleep.sleep(1)
 }
 console.log(`Done! Successfully export ${rpt} pdf files.`)
 }

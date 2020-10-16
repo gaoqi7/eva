@@ -1,4 +1,3 @@
-
 const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 //Use ExcelJS to Modify ACH.xlsx File
 const Excel = require('exceljs')
@@ -11,36 +10,42 @@ const pdf =  require('pdf-extraction')
 //Actually, I can just use one dependent(fs-extra) to deal with file system operation like copy paste, read and write.
 const fs = require('fs')
 const { match } = require('assert')
-//PDF >> Array of Text >> cherry pick what I need
-// I store all the information from one payment checklist in ONE big Array and 
-// Then cut the single array in small pieces. each piece match only one payment info
-//Care the file name, tend to use process.argv
-//1.pdf !!! what a great name!!!    
+//tl.pdf !!! what a great name!!!    
+// Parse pdf file
 let dataBuffer = fs.readFileSync('tl.pdf')
 pdf(dataBuffer).then(data=>{
     const rawArr = data.text.split('\n')
     console.log(rawArr)
+    // use array to store the [['10/07/2020',36.56],[transactioin date,transaction amount]...]
 const transactionInfo = []
 rawArr.forEach((el,i)=>{
+    // get info around SETTLEMENT line. previous line get transactioin day and next line get transaction amount
+    // the info around SETTLEMENT is about Debit ACH
     if (el.trim() === 'SETTLEMENT'){
         let tDay = rawArr[i-1].split(' ')[2]
         let tAmount = rawArr[i+1].split(' ')[0]
         transactionInfo.push([tDay,tAmount])
+    // Line start with account number is about the EFT Debit 
+    // tDay and tAmount is in the same line 
     } else if (el.startsWith('211367350') && el.length>45){
-        // must use trim()
+        // must use trim(), because of some line ending with empty space
         let tInfoArr = rawArr[i].trim().split(' ')
         let tDay = tInfoArr[2]
         let tAmount = tInfoArr[tInfoArr.length - 4]
         transactionInfo.push([tDay,tAmount])
     }
 })
-console.log(transactionInfo)
 
+console.log('The result of Bank Transaction List Parsing is ',transactionInfo)
+// After pasing the transactioin list and collect all the data I need. 
+// Now it is time to transfer the collected information to excel
 async function modifyExcel(){
 
     fse.copySync('ACH.xlsx','ACH_bk.xlsx')
     await workbook.xlsx.readFile('ACH_bk.xlsx')
     const ws = workbook.getWorksheet(1)
+// Extract the transaction amount(amountArr) from the transaction list
+// Extract the transaction Day(tDay) from the transaction list and reformate the date
     let amountArr=[] 
     let tDay = transactionInfo[0][0].split('/').join('')
     let td1 = tDay.slice(4)
@@ -51,22 +56,26 @@ async function modifyExcel(){
         amountArr.push(a)
     })
     let totalRow = ws.rowCount
-
+// Search the matching payday from localPayDay column
     const localPDCol = ws.getColumn('F')
+    // all variable start with xy means location in Excel
     const xyAmountMatchPool = []
-    function amountMatchPoolCreate(date){
-        let amountList = []
-
+    // This functioin is used for filter out all the UNPAID AMOUNT in ACH file. Store in unpaidAmountList
+    // And, list out all the unpaid amount ROW NUMBER. store in xyAmountMatchPool
+    function amountMatchPoolCreate(){
+        let unpaidAmountList = []
         localPDCol.eachCell((cell,rowNumber)=>{
+            // As long as there is no content in Transaction Day Column, The amount number will be added in unpaidAmountList array
             if( ws.getCell(`E${rowNumber}`).value === null){
-                amountList.push(ws.getCell(`G${rowNumber}`).value)
+                unpaidAmountList.push(ws.getCell(`G${rowNumber}`).value)
                 xyAmountMatchPool.push(rowNumber)
             }
         })
         
-        return amountList
+        return unpaidAmountList
     }
-
+// Feed this function an array including all the unpaid amount(amountList) 
+//and the Matching target from the amount number from transaction list which is amountArr 
     function amountSumMatch(arr, target){
 
         function powerset(arr) {
@@ -99,8 +108,8 @@ async function modifyExcel(){
 
 
     }
-    
-    const aMP = amountMatchPoolCreate(tDay)
+    // just get unpaidAmountList
+    const aMP = amountMatchPoolCreate()
     console.log(tDay)
     console.log(aMP)
     console.log(amountArr)
@@ -108,7 +117,9 @@ async function modifyExcel(){
         console.log(`for${el}`)
 let matchedAmountArr =amountSumMatch(aMP,el)
 console.log(matchedAmountArr)
-console.log(typeof matchedAmountArr)
+// Sometime , Because of Auto Deducted payment type, the creation of payment application is later than the actual transaction
+// The result is there will be no matching payment application  for one bank transaction.
+// So, I still need verity after tl.pdf modified.  
 if (matchedAmountArr){
     matchedAmountArr.forEach(el=>{
         let r = xyAmountMatchPool[aMP.indexOf(el)]
@@ -119,7 +130,18 @@ if (matchedAmountArr){
 //***************** */
 // Modify Transaction List
 //**************** */
+async function modifyTL(x0,y0){
 
+    const existingPdfBytes = fse.readFileSync('tl.pdf')
+    const pdfDoc = await PDFDocument.load(existingPdfBytes)
+    const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+    const pages = pdfDoc.getPages()
+    const modifyPage = pages[0]
+    const { width, height } = firstPage.getSize()
+    // modifyPage.drawText(ws)
+    
+    
+}
 
 
 

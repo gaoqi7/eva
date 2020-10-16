@@ -17,6 +17,7 @@ const afterFilter = []
 let dataBuffer = fs.readFileSync('1.pdf')
 pdf(dataBuffer).then(data=>{
     const rawArr = data.text.split('\n')
+    console.log('-------===Below is the RAW DATA===--------')
     console.log(rawArr)
 // For Request Date
 const apReqDate = rawArr[12].split('/').join('')
@@ -27,7 +28,7 @@ const apReqDep = rawArr[13]
 rawArr.forEach((el,i)=>{
 // line ***start with '00' *** includes the AP number information
 // line start with "N" and the third charactor is ":"
-   const isLocalPayInfo = el.startsWith('N') && el[2]===':'
+   const isLocalPayInfo = (el.startsWith('N')|| el.startsWith('Y')) && el[2]===':'
    //There is one Payment Application Called 4601, HHHHHHHH
 if(el.startsWith('00') || isLocalPayInfo || el.startsWith('46')){
     afterFilter.push(el)

@@ -12,7 +12,7 @@ const fs = require("fs");
 const { match } = require("assert");
 //tl.pdf !!! what a great name!!!
 // Parse pdf file
-let dataBuffer = fs.readFileSync("1021.pdf");
+let dataBuffer = fs.readFileSync("1022.pdf");
 pdf(dataBuffer).then((data) => {
   const rawArr = data.text.split("\n");
   console.log(rawArr);
@@ -50,7 +50,7 @@ pdf(dataBuffer).then((data) => {
     await workbook.xlsx.readFile(
       `\\\\10.101.1.240\\ftafs\\Scan\\H36360\\ach_bk\\ACH_bk.xlsx`
     );
-    const ws = workbook.getWorksheet(1);
+    const ws = workbook.getWorksheet("ap");
     // Extract the transaction amount(amountArr) from the transaction list
     // Extract the transaction Day(tDay) from the transaction list and reformate the date
     let amountArr = [];

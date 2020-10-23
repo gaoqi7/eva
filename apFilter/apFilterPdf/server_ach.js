@@ -111,7 +111,7 @@ pdf(dataBuffer).then((data) => {
     await workbook.xlsx.readFile(
       `\\\\10.101.1.240\\ftafs\\Scan\\H36360\\ach_bk\\ACH_bk.xlsx`
     );
-    const ws = workbook.getWorksheet(1);
+    const ws = workbook.getWorksheet("ap");
     let startRow = ws.rowCount + 1;
     dataReady.forEach((el) => {
       ws.getCell(`B${startRow}`).value = el[0];

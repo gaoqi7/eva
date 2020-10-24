@@ -85,23 +85,6 @@ async function getDCSummary() {
   await mergePDF();
 }
 
-// function createResultPDF(){
-
-//   const doc = new jsPDF({
-//     orientation: "landscape",
-//     unit: "in",
-//     format: [11, 8.5]
-//   });
-
-//   // doc.text(cd[0], 9.5, 2.875);
-//   doc.text(cd[1], 9.5, 2.875);
-//   doc.text(cd[2], 9.5, 3.125);
-//   doc.text(cd[3], 9.5, 3.75);
-//   doc.text(cd[4], 9.5, 4);
-//   doc.text(cd[5], 9.5, 4.63);
-//   doc.save("./pdf/forReview.pdf");
-
-// }
 
 function mergePDF() {
   const pdfPath = fs.readdirSync("./pdf").map((el) => `./pdf/${el}`);

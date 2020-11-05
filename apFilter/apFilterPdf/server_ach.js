@@ -105,7 +105,7 @@ pdf(dataBuffer).then((data) => {
 
   async function modifyExcle() {
     fse.copySync(
-      `\\\\10.101.1.240\\ftafs\\SUP\\FIN\\HELEN\\Important\\ACH-test.xlsx`,
+      `\\\\10.101.1.240\\ftafs\\SUP\\FIN\\HELEN\\Important\\ACH.xlsx`,
       `\\\\10.101.1.240\\ftafs\\Scan\\H36360\\ach_bk\\ACH_bk.xlsx`
     );
     await workbook.xlsx.readFile(
@@ -114,6 +114,43 @@ pdf(dataBuffer).then((data) => {
     const ws = workbook.getWorksheet("ap");
     let startRow = ws.rowCount + 1;
     dataReady.forEach((el) => {
+      if (startRow % 2 === 0) {
+        ws.getCell(`A${startRow}`).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "EBF1DE" },
+        };
+        ws.getCell(`B${startRow}`).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "EBF1DE" },
+        };
+        ws.getCell(`C${startRow}`).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "EBF1DE" },
+        };
+        ws.getCell(`D${startRow}`).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "EBF1DE" },
+        };
+        ws.getCell(`E${startRow}`).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "EBF1DE" },
+        };
+        ws.getCell(`F${startRow}`).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "EBF1DE" },
+        };
+        ws.getCell(`G${startRow}`).fill = {
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "EBF1DE" },
+        };
+      }
       ws.getCell(`B${startRow}`).value = el[0];
       ws.getCell(`C${startRow}`).value = el[1];
       ws.getCell(`D${startRow}`).value = el[2];
@@ -123,7 +160,7 @@ pdf(dataBuffer).then((data) => {
       startRow++;
     });
     await workbook.xlsx.writeFile(
-      `\\\\10.101.1.240\\ftafs\\SUP\\FIN\\HELEN\\Important\\ACH-test.xlsx`
+      `\\\\10.101.1.240\\ftafs\\SUP\\FIN\\HELEN\\Important\\ACH.xlsx`
     );
     // await fse.removeSync(
     //   "\\\\10.101.1.240\\ftafs\\Scan\\H36360\\ach_bk\\ACH_bk.xlsx"

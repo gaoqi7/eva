@@ -1,6 +1,7 @@
 const { PDFDocument, rgb, StandardFonts } = require("pdf-lib");
 //Use ExcelJS to Modify ACH.xlsx File
 const Excel = require("exceljs");
+const tlFileName = process.argv[2];
 const workbook = new Excel.Workbook();
 //Use fs-extra package to make Copy and delete Copy
 //ExcelJS not support read and write a file at same time. I have to create a copy which is ACH_bk.xlsx, read and modify that copy, and then write into the original file.
@@ -12,7 +13,7 @@ const fs = require("fs");
 const { match } = require("assert");
 //tl.pdf !!! what a great name!!!
 // Parse pdf file
-let dataBuffer = fs.readFileSync("1022.pdf");
+let dataBuffer = fs.readFileSync(`${tlFileName}.pdf`);
 pdf(dataBuffer).then((data) => {
   const rawArr = data.text.split("\n");
   console.log(rawArr);
@@ -44,7 +45,7 @@ pdf(dataBuffer).then((data) => {
   // Now it is time to transfer the collected information to excel
   async function modifyExcel() {
     fse.copySync(
-      `\\\\10.101.1.240\\ftafs\\SUP\\FIN\\HELEN\\Important\\ACH-test.xlsx`,
+      `\\\\10.101.1.240\\ftafs\\SUP\\FIN\\HELEN\\Important\\ACH.xlsx`,
       `\\\\10.101.1.240\\ftafs\\Scan\\H36360\\ach_bk\\ACH_bk.xlsx`
     );
     await workbook.xlsx.readFile(
@@ -131,7 +132,7 @@ pdf(dataBuffer).then((data) => {
           );
           ws.getCell(`E${r}`).value = tDay;
           workbook.xlsx.writeFile(
-            `\\\\10.101.1.240\\ftafs\\SUP\\FIN\\HELEN\\Important\\ACH-test.xlsx`
+            `\\\\10.101.1.240\\ftafs\\SUP\\FIN\\HELEN\\Important\\ACH.xlsx`
           );
           //   fse.removeSync("Ach_bk.xlsx");
           //***************** */

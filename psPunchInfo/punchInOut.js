@@ -90,44 +90,60 @@ async function modify() {
         ws.getCell(`E${b[t][1]}`).value = "?????";
       }
       // Find the days crossing a week
+
       console.log(dayjs(b[t][0]).week());
+      // if array w doesn't have a week numnber, then collect it.
       if (w.indexOf(dayjs(b[t][0]).week()) === -1) {
         w.push(dayjs(b[t][0]).week());
+        // at the same time , push the matching row number into array wr, r in the 'wr' means row
         wr.push(b[t][1]);
         // console.log(w);
       }
     }
-    console.log(wr);
+    // console.log(wr);
+
     for (wi = 1; wi < wr.length; wi++) {
+      // https://github.com/exceljs/exceljs/issues/1067
+      // Under this link, it shows how to add border:
       ws.getCell(`'E${wr[wi]}'`).style = {
         border: {
           top: { style: "thick", color: { argb: "305496" } },
         },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
       };
       ws.getCell(`'F${wr[wi]}'`).style = {
         border: {
           top: { style: "thick", color: { argb: "305496" } },
         },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
       };
       ws.getCell(`'G${wr[wi]}'`).style = {
         border: {
           top: { style: "thick", color: { argb: "305496" } },
         },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
       };
       ws.getCell(`'H${wr[wi]}'`).style = {
         border: {
           top: { style: "thick", color: { argb: "305496" } },
         },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
       };
       ws.getCell(`'I${wr[wi]}'`).style = {
         border: {
           top: { style: "thick", color: { argb: "305496" } },
         },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
       };
     }
   }
 
-  wb.xlsx.writeFile("pinhaha.xlsx");
+  wb.xlsx.writeFile("pinooohaha.xlsx");
   // fse.removeSync("punchInOutBk.xlsx");
 }
 

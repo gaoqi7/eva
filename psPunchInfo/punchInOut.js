@@ -1,6 +1,9 @@
 const fse = require("fs-extra");
 const Excel = require("exceljs");
 const wb = new Excel.Workbook();
+const dayjs = require("dayjs");
+const weekOfYear = require("dayjs/plugin/weekOfYear");
+dayjs.extend(weekOfYear);
 
 Array.prototype.chunk = function (chunk_size) {
   if (!this.length) {
@@ -34,11 +37,14 @@ async function modify() {
   let eeChunk = eeList.chunk(2);
   eeChunk.push(["NNNNNN", ws.rowCount + 1]);
   console.log(eeChunk);
-
   //This loop is looping the person.
   for (i = 0; i < eeChunk.length - 1; i++) {
     let a = []; // used for collect the punch date info
     // this loop is for everyday's punch info for one person
+    // w[] used to collect week of a day for one employee
+    // W means WEEK
+    const w = [];
+    const wr = [];
     for (j = eeChunk[i][1] + 1; j < eeChunk[i + 1][1]; j++) {
       // Remove Duplicate content in Column A & B
       ws.getCell(`A${j}`).value = null;
@@ -83,10 +89,36 @@ async function modify() {
         // use ?????? to indicate the bad punch action.
         ws.getCell(`E${b[t][1]}`).value = "?????";
       }
+      // Find the days crossing a week
+      console.log("wttttttttttttttttttttttttttttttttttttttttttf");
+      console.log(dayjs(b[t][0]).week());
+      if (w.indexOf(dayjs(b[t][0]).week()) === -1) {
+        w.push(dayjs(b[t][0]).week());
+        wr.push(b[t][1]);
+        // console.log(w);
+      }
+    }
+    console.log(wr);
+    for (wi = 1; wi < w.length; wi++) {
+      ws.getCell(`E${wr[wi]}`).border = {
+        top: { style: "thick", color: { argb: "305496" } },
+      };
+      ws.getCell(`F${wr[wi]}`).border = {
+        top: { style: "thick", color: { argb: "305496" } },
+      };
+      ws.getCell(`G${wr[wi]}`).border = {
+        top: { style: "thick", color: { argb: "305496" } },
+      };
+      ws.getCell(`H${wr[wi]}`).border = {
+        top: { style: "thick", color: { argb: "305496" } },
+      };
+      ws.getCell(`I${wr[wi]}`).border = {
+        top: { style: "thick", color: { argb: "305496" } },
+      };
     }
   }
 
-  wb.xlsx.writeFile("pin.xlsx");
+  wb.xlsx.writeFile("pin1.xlsx");
   // fse.removeSync("punchInOutBk.xlsx");
 }
 

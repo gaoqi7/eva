@@ -85,7 +85,6 @@ async function getDCSummary() {
   await mergePDF();
 }
 
-
 function mergePDF() {
   const pdfPath = fs.readdirSync("./pdf").map((el) => `./pdf/${el}`);
   merge(pdfPath, "./pdf/forPrint.pdf", function (err) {

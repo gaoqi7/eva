@@ -15,8 +15,8 @@ Array.prototype.chunk = function (chunk_size) {
 const eeList = [];
 
 async function modify() {
-  fse.copySync("20201031punchinout.xlsx", "punchInOutBk.xlsx");
-  await wb.xlsx.readFile("punchInOutBk.xlsx");
+  // fse.copySync("20201031punchinout.xlsx", "punchInOutBk.xlsx");
+  await wb.xlsx.readFile("pin.xlsx");
   const ws = wb.getWorksheet(1);
   //Get Column D
   const eeID = ws.getColumn("D");
@@ -43,7 +43,9 @@ async function modify() {
       // Remove Duplicate content in Column A & B
       ws.getCell(`A${j}`).value = null;
       ws.getCell(`B${j}`).value = null;
-      //collect the punch date
+      ws.getCell(`C${j}`).value = null;
+      ws.getCell(`D${j}`).value = null;
+      //collect the punch date and row number
       if (a.indexOf(ws.getCell(`F${j - 1}`).value) === -1) {
         a.push(ws.getCell(`F${j - 1}`).value);
         a.push(j - 1);
@@ -84,8 +86,8 @@ async function modify() {
     }
   }
 
-  wb.xlsx.writeFile("punchInOut.xlsx");
-  fse.removeSync("punchInOutBk.xlsx");
+  wb.xlsx.writeFile("pin.xlsx");
+  // fse.removeSync("punchInOutBk.xlsx");
 }
 
 modify();

@@ -90,7 +90,6 @@ async function modify() {
         ws.getCell(`E${b[t][1]}`).value = "?????";
       }
       // Find the days crossing a week
-      console.log("wttttttttttttttttttttttttttttttttttttttttttf");
       console.log(dayjs(b[t][0]).week());
       if (w.indexOf(dayjs(b[t][0]).week()) === -1) {
         w.push(dayjs(b[t][0]).week());
@@ -99,26 +98,36 @@ async function modify() {
       }
     }
     console.log(wr);
-    for (wi = 1; wi < w.length; wi++) {
-      ws.getCell(`E${wr[wi]}`).border = {
-        top: { style: "thick", color: { argb: "305496" } },
+    for (wi = 1; wi < wr.length; wi++) {
+      ws.getCell(`'E${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
       };
-      ws.getCell(`F${wr[wi]}`).border = {
-        top: { style: "thick", color: { argb: "305496" } },
+      ws.getCell(`'F${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
       };
-      ws.getCell(`G${wr[wi]}`).border = {
-        top: { style: "thick", color: { argb: "305496" } },
+      ws.getCell(`'G${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
       };
-      ws.getCell(`H${wr[wi]}`).border = {
-        top: { style: "thick", color: { argb: "305496" } },
+      ws.getCell(`'H${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
       };
-      ws.getCell(`I${wr[wi]}`).border = {
-        top: { style: "thick", color: { argb: "305496" } },
+      ws.getCell(`'I${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
       };
     }
   }
 
-  wb.xlsx.writeFile("pin1.xlsx");
+  wb.xlsx.writeFile("pinhaha.xlsx");
   // fse.removeSync("punchInOutBk.xlsx");
 }
 

@@ -54,7 +54,7 @@ function cool() {
             return " ";
           }
         }
-        for (n = 15; n < 19; n++) {
+        for (n = 15; n < 21; n++) {
           data += dataParser(n);
         }
         // robot.typeStringDelayed(data,200)

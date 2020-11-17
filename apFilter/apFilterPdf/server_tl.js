@@ -32,7 +32,17 @@ pdf(dataBuffer).then((data) => {
       // must use trim(), because of some line ending with empty space
       let tInfoArr = rawArr[i].trim().split(" ");
       let tDay = tInfoArr[2];
-      let tAmount = tInfoArr[tInfoArr.length - 4];
+
+      // For Amount, I can't cherry pick by index anymore, because Chase Bank can randomly add reference
+      // But , what looks like for sure is , the amount is just before the USD string.
+      let tAmount;
+      tInfoArr.forEach((element, index) => {
+        if (element.trim() === "USD") {
+          tAmount = tInfoArr[index - 1];
+        }
+      });
+
+      // let tAmount = tInfoArr[tInfoArr.length - 4];
       transactionInfo.push([tDay, tAmount]);
     }
   });

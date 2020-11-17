@@ -4,7 +4,7 @@ const wb = new Excel.Workbook();
 const dayjs = require("dayjs");
 const weekOfYear = require("dayjs/plugin/weekOfYear");
 dayjs.extend(weekOfYear);
-
+const fileName = process.argv[2];
 Array.prototype.chunk = function (chunk_size) {
   if (!this.length) {
     return [];
@@ -19,7 +19,7 @@ const eeList = [];
 
 async function modify() {
   // fse.copySync("20201031punchinout.xlsx", "punchInOutBk.xlsx");
-  await wb.xlsx.readFile("pin.xlsx");
+  await wb.xlsx.readFile(`${fileName}.xlsx`);
   const ws = wb.getWorksheet(1);
   //Get Column D
   const eeID = ws.getColumn("D");
@@ -143,7 +143,7 @@ async function modify() {
     }
   }
 
-  wb.xlsx.writeFile("pinooohaha.xlsx");
+  wb.xlsx.writeFile(`${fileName}.xlsx`);
   // fse.removeSync("punchInOutBk.xlsx");
 }
 

@@ -1,39 +1,50 @@
 const Excel = require("exceljs");
 const workbook = new Excel.Workbook();
+
 async function getExcelReady() {
-  await workbook.xlsx.readFile("收入比較-202009.xlsx");
-  workbook.eachSheet(function (worksheet, sheetId) {
+  await workbook.xlsx.readFile("收入比較-202010.xlsx");
+  workbook.eachSheet(async function (worksheet, sheetId) {
     // total Row
     let ttlR = worksheet.rowCount;
 
     console.log("total row ", ttlR);
-    for (i = 2; i < ttlR - 1; i++) {
-      // console.log("rich text ", worksheet.getCell(`C${i}`).value.richText);
+    for (i = 2; i < ttlR; i++) {
+      let d = new Date();
+      b_month = d.getMonth();
       if (i === 2) {
-        worksheet.getCell("C2").value.richText[
-          worksheet.getCell(`C2`).value.richText.length - 1
-        ].text = "(B)";
+        let crt = [];
+        crt.push({ text: `${b_month}` });
+        crt.push(worksheet.getCell(`C2`).value.richText[1]);
+        crt.push({
+          font: {
+            size: 16,
+            color: { theme: 1 },
+            name: "Times New Roman",
+            family: 1,
+          },
+          text: "(B)",
+        });
+        worksheet.getCell(`C2`).value.richText = crt;
 
-        let b_month = parseInt(
-          worksheet.getCell(`B2`).value.richText[0].text[0]
-        );
-        console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", 1 + b_month);
-        console.log(worksheet.getCell(`B2`).value.richText[0].text[0]);
-        if (worksheet.getCell(`B2`).value.richText[0].text[0].length === 1) {
-        }
-        // console.log(`10${fff.slice(-3)}`);
-        // fff = `${1 + b_month}${fff.slice(-(fff.length - 1))}`;
+        let rt = [];
+        rt.push({ text: `${b_month + 1}` });
+        rt.push(worksheet.getCell(`B2`).value.richText[1]);
+        rt.push({
+          font: {
+            size: 16,
+            color: { theme: 1 },
+            name: "Times New Roman",
+            family: 1,
+          },
+          text: "(A)",
+        });
 
-        // console.log("hahahah", 1 + b_month);
-        // console.log("B22222222222222", worksheet.getCell(`B2`).value);
+        worksheet.getCell(`B2`).value.richText = rt;
       } else {
-        // console.log("B's text", worksheet.getCell(`B${i}`).text);
-
         worksheet.getCell(`C${i}`).value = worksheet.getCell(`B${i}`).value;
-        // console.log("did i change", worksheet.getCell(`C${i}`).text);
       }
     }
   });
-  return workbook.xlsx.writeFile("收入比較-202009.xlsx");
+  return workbook.xlsx.writeFile("收入比較-202010.xlsx");
 }
 getExcelReady();

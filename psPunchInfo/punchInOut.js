@@ -140,6 +140,42 @@ async function modify() {
         font: { name: "Arial", size: 14 },
         alignment: { vertical: "middle", horizontal: "left" },
       };
+      ws.getCell(`'J${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
+        font: { name: "Calibri", size: 11 },
+        alignment: { vertical: "bottom", horizontal: "right" },
+      };
+      ws.getCell(`'J${wr[wi]}'`).numFmt = "hh:mm";
+      ws.getCell(`'K${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
+      };
+      ws.getCell(`'L${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
+      };
+      ws.getCell(`'M${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
+      };
+      ws.getCell(`'N${wr[wi]}'`).style = {
+        border: {
+          top: { style: "thick", color: { argb: "305496" } },
+        },
+        font: { name: "Arial", size: 14 },
+        alignment: { vertical: "middle", horizontal: "left" },
+      };
     }
   }
 

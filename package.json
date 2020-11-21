@@ -18,6 +18,7 @@
     "fs-extra": "^9.0.1",
     "pdf-extraction": "^1.0.2",
     "pdf-lib": "^1.11.1",
+    "puppeteer": "^5.5.0",
     "robotjs": "^0.6.0",
     "sleep": "^6.3.0"
   }

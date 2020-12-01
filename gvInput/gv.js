@@ -8,6 +8,9 @@ const workbookName = process.argv[2];
 const worksheetName = process.argv[3];
 // How many line need key in this time
 const linesNeedKeyIn = process.argv[4];
+// starter row
+var starterRow = parseInt(process.argv[5]) || 2;
+console.log("this is the startRow: ", starterRow);
 
 const seRow = [2, 16];
 const seCol = [2, 14];

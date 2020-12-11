@@ -1,10 +1,7 @@
 const fse = require("fs-extra");
 const pdf = require("pdf-extraction");
 
-const afterFilter = [];
-const xyEmployee = [];
-const xyManualCheck = [];
-let dataBuffer = fse.readFileSync("pp.pdf");
+let dataBuffer = fse.readFileSync("pp1.pdf");
 
 Array.prototype.chunk = function (chunk_size) {
   if (!this.length) {
@@ -27,11 +24,14 @@ pdf(dataBuffer).then(function (data) {
     let v;
     if (el.startsWith("Employee:")) {
       container[counter] = [];
-      container[counter].push(el);
+      container[counter].push(el.slice(9));
       tc = counter;
       if (!isNaN(rawArr[i - 1]) && counter !== 0) {
         v = rawArr[i - 1];
-        if (container[counter - 1].indexOf(v) === -1) {
+        if (
+          container[counter - 1].indexOf(v) === -1 &&
+          container[counter - 1].length < 3
+        ) {
           container[counter - 1].push(v);
         }
       }

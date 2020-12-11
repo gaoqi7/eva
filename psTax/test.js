@@ -25,7 +25,10 @@ pdf(dataBuffer).then(function (data) {
       // Deal with the case 3.
       if (!isNaN(rawArr[i - 1]) && counter !== 0) {
         v = rawArr[i - 1];
-        if (container[counter - 1].indexOf(v) === -1) {
+        if (
+          container[counter - 1].indexOf(v) === -1 &&
+          container[counter - 1].length < 3
+        ) {
           container[counter - 1].push(v);
         }
       }

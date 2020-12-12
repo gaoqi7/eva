@@ -2,3 +2,4 @@ node_modules
 *.pdf
 *.xlsx
 build
+*.nvimlog

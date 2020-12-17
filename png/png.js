@@ -1,0 +1,5 @@
+const fs = require('fs')
+const text2png = require('text2png')
+const images = require("images")
+fs.writeFileSync('out.png',text2png('20201223',{color:'yellow'}))
+images(`test.jpeg`).size(800).draw(images("out.png"),10,10).save("output.jpg",{quality:50})
